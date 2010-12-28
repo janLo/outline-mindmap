@@ -41,9 +41,12 @@ def attach_note(node, textlines):
     htmlnode = et.SubElement(notenode, 'html')
     headnode = et.SubElement(htmlnode, 'head')
     bodynode = et.SubElement(htmlnode, 'body')
+    pnode = None
     for line in textlines:
-        pnode = et.SubElement(bodynode, 'p')
-        pnode.text = line
+        if pnode is None or len(line.strip()) < 1:
+            pnode = et.SubElement(bodynode, 'p')
+            pnode.text = ''
+        pnode.text = ' '.join([pnode.text, line.strip()])
 
 # node ID should be based on the line number of line in the otl file for easier 
 # debugging
@@ -103,8 +106,8 @@ for heading, bodytext in zip(headings, bodytexts):
 
     node = et.SubElement(parents[-1], 'node')
     node.set('TEXT', heading.lstrip().rstrip('\r\n'))
-    #if len(bodytext) > 0:
-    attach_note(node, bodytext)
+    if len(bodytext) > 0:
+        attach_note(node, bodytext)
 
     oldheading = heading
 
