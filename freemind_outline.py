@@ -20,7 +20,7 @@ class Outline:                     # The target object of the parser
         if tag == 'node' and self.depth > 1:
             #if 'tab' in attrib['TEXT']:
                 #import pdb; pdb.set_trace()
-            print (self.depth-2)*self.indent + attrib['TEXT']
+            print (self.depth-2)*self.indent + attrib['TEXT'].encode('utf-8')
     def end(self, tag):            # Called for each closing tag.
         self.depth -= 1
         self.current_tag = None
@@ -30,7 +30,7 @@ class Outline:                     # The target object of the parser
             bodyindent = (self.depth-5)*self.indent + ": "
             #textlines = textwrap.wrap(bodytext, width=77-len(bodyindent), break_on_hyphens=False)
             #for line in textlines: 
-            print bodyindent + bodyline
+            print bodyindent + bodyline.encode('utf-8')
 
     def close(self):    # Called when all data has been parsed.
         pass
@@ -40,5 +40,5 @@ parser = XMLParser(target=outline)
 
 fname = sys.argv[1]
 filelines = open(fname).readlines()
-parser.feed(''.join(filelines))
+parser.feed(unicode(''.join(filelines), 'utf-8'))
 parser.close()

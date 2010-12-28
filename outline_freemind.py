@@ -74,6 +74,7 @@ filelines = open(fname).readlines()
 headings = []
 bodytexts = []
 for line in filelines:
+    line = unicode(line, 'utf-8')
     if otl.is_heading(line):
         headings.append(line)
         bodytexts.append([])
